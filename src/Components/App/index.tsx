@@ -17,11 +17,11 @@ export const App = () => {
   const { updateCurrentPool } = useCurrentPool()
   const { tokens } = useListTokens()
   const { fetchBalanceAndAllowance } = useWalletBalance()
-  const { account } = useWeb3React()
-  const { configs, chainId } = useConfigs()
+  const { account, chainId } = useWeb3React()
+  const { configs, chainId: chainIdConfig } = useConfigs()
 
   useEffect(() => {
-    if (account && Object.keys(tokens).length > 0) {
+    if (account && Object.keys(tokens).length > 0 && chainId === chainIdConfig) {
       fetchBalanceAndAllowance(Object.keys(tokens))
     }
   }, [account, tokens])
@@ -44,7 +44,7 @@ export const App = () => {
       console.log('configs?.addresses.pool', configs?.addresses.pool)
       updateCurrentPool(configs.addresses.pool)
     }
-  }, [chainId])
+  }, [chainIdConfig])
 
   const renderAppContent = () => {
     switch (true) {
